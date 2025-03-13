@@ -1,10 +1,10 @@
-export default function analyzeLogEntries(entries) {
+export default function analyzeLogEntries(entries:any) {
     const startTime = Date.now();
 
-    const stats = entries.reduce((acc, entry) => {
+    const stats = entries.reduce((acc:any, entry:any) => {
         acc.level_distribution[entry.level] = (acc.level_distribution[entry.level] || 0) + 1;
 
-        entry.keywords?.forEach(keyword => {
+        entry.keywords?.forEach((keyword:string) => {
             acc.keyword_frequency[keyword] = (acc.keyword_frequency[keyword] || 0) + 1;
         });
 
@@ -24,7 +24,7 @@ export default function analyzeLogEntries(entries) {
 
     // Calculate top_ips (e.g., top 5 IPs by occurrence)
     stats.top_ips = Object.entries(stats.ip_occurrences)
-        .sort((a, b) => b[1] - a[1])
+        .sort((a:any, b:any) => b[1] - a[1])
         .slice(0, 5) // Adjust based on desired top count
         .map(entry => ({ ip: entry[0], count: entry[1] }));
 

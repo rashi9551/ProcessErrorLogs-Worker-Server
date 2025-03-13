@@ -4,7 +4,7 @@ dotenv.config();
 const keywords = process.env.ERROR_KEYWORDS ? process.env.ERROR_KEYWORDS.split(',') : [];
 
 // Function to check if a message contains any of the keywords
-function findKeywords(message) {
+function findKeywords(message:string) {
   const foundKeywords = keywords.filter(keyword =>
     message.toLowerCase().includes(keyword.toLowerCase().trim())
   );
@@ -12,7 +12,7 @@ function findKeywords(message) {
 }
 
 // Function to parse a log line
-export  function parseLogLine(line, keywords = []) {
+export  function parseLogLine(line:string, keywords = []) {
   try {
     // Regex to match: [TIMESTAMP] LEVEL MESSAGE {optional JSON}
     const regex = /\[(.*?)\]\s+(\w+)\s+(.*?)(?:\s+(\{.*\}))?$/;
@@ -27,13 +27,13 @@ export  function parseLogLine(line, keywords = []) {
     if (jsonPayload) {
       try {
         parsedPayload = JSON.parse(jsonPayload);
-      } catch (err) {
+      } catch (err:any) {
         console.error(`Error parsing JSON payload: ${err.message}, payload: ${jsonPayload}`);
       }
     }
 
     // Find keywords in the message
-    const foundKeywords = findKeywords(message, keywords);
+    const foundKeywords = findKeywords(message);
 
     return {
       timestamp,
@@ -42,7 +42,7 @@ export  function parseLogLine(line, keywords = []) {
       keywords: foundKeywords,
       ...parsedPayload
     };
-  } catch (error) {
+  } catch (error:any) {
     console.error(`Error parsing log line: ${error.message}, line: ${line}`);
     return null; // Skip this line but don't fail the entire process
   }
