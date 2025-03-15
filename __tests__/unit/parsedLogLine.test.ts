@@ -1,5 +1,5 @@
 // __tests__/unit/parsedLogLine.test.ts
-import { parseLogLine } from '../../src/utils/parsedLogLine.js';
+import { parseLogLine } from '../../src/utils/parsedLogLine';
 
 describe('parseLogLine', () => {
   test('should correctly parse a valid log line', () => {

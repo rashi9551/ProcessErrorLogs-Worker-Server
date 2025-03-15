@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "NodeNext",
+    "module": "NodeNext",          // This must be one of the supported values
     "moduleResolution": "NodeNext",
     "esModuleInterop": true,
     "sourceMap": true,
     "outDir": "dist",
     "strict": true,
-    "lib": ["ES2022", "DOM"], // Add DOM here
+    "lib": ["ES2022", "DOM"],
     "resolveJsonModule": true
   },
   "include": ["src/**/*"],

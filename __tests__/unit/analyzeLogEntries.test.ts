@@ -1,5 +1,5 @@
 // __tests__/unit/analyzeLogEntries.test.ts
-import analyzeLogEntries from '../../src/utils/analyzeLogEntries.js';
+import analyzeLogEntries from '../../src/utils/analyzeLogEntries';
 
 describe('analyzeLogEntries', () => {
   test('should correctly analyze log entries', () => {
