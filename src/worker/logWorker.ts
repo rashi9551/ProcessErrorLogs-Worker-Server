@@ -12,6 +12,7 @@ export function createLogWorker(): Worker<LogProcessingJobData, JobResult> {
     async (job: Job<LogProcessingJobData>): Promise<JobResult> => {
       const jobStartDate = new Date().toISOString();
       console.log(`🔄 Processing job ${job.id}: ${job.name}`);
+      // await new Promise(resolve => setTimeout(resolve, 60000)); 
 
       const { userId, originalFilename } = job.data;
       let processedLines = 0;
