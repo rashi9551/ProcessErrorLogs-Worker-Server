@@ -1,4 +1,3 @@
-// src/workers/logWorker.ts
 import { Job, Worker } from 'bullmq';
 import { LogProcessingJobData, JobResult, LogEntry } from '../interface/interface.js';
 import { connection } from '../config/redis.js';
@@ -11,8 +10,10 @@ export function createLogWorker(): Worker<LogProcessingJobData, JobResult> {
     'log-processing',
     async (job: Job<LogProcessingJobData>): Promise<JobResult> => {
       const jobStartDate = new Date().toISOString();
-      console.log(`🔄 Processing job ${job.id}: ${job.name}`);
+      const message = `🔄 Processing job ${job.id}: ${job.name}`;
+      console.log(message);
       // await new Promise(resolve => setTimeout(resolve, 60000)); 
+      // io.emit('consoleMessage', { type: 'info', message }); // Broadcast console message
 
       const { userId, originalFilename } = job.data;
       let processedLines = 0;
@@ -22,9 +23,21 @@ export function createLogWorker(): Worker<LogProcessingJobData, JobResult> {
       try {
         await initializeJobStatus(job, userId, originalFilename, jobStartDate);
         const readStream = await getFileStream(job.data);
+
         await processLogFile(readStream, job, logEntries, processedLines, errorCount);
+
+        const completionMessage = `✅ Job ${job.id} completed successfully`;
+        console.log(completionMessage);
+
+        // io.emit('consoleMessage', { type: 'success', message: completionMessage }); // Broadcast completion message
+
         return await handleSuccessfulProcessing(job, logEntries, processedLines, errorCount);
-      } catch (error) {
+      } catch (error: any) {
+        const errorMessage = `❌ Job ${job.id} failed: ${error.message}`;
+        console.error(errorMessage);
+        // io.emit('consoleMessage', { type: 'error', message: errorMessage }); // Broadcast error message
+
+
         await handleJobFailure(job, processedLines, logEntries.length, errorCount, error);
         throw error;
       }

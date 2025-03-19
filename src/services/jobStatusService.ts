@@ -1,6 +1,7 @@
 import { Job } from "bullmq";
 import { JobProgress, LogProcessingJobData } from "../interface/interface.js";
 import { supabase } from "../config/supabase.js";
+import { io } from "../index.js";
 
  // Helper functions
  export async function initializeJobStatus(
@@ -28,7 +29,9 @@ export async function updateJobProgress(
   errorCount: number
 ) {
   await job.updateProgress({ processedLines, validEntries, errorCount } as JobProgress);
-  console.log(`Progress: ${processedLines} lines, ${validEntries} valid, ${errorCount} errors`);
+  const message=`Progress: ${processedLines} lines, ${validEntries} valid, ${errorCount} errors`
+  console.log(message);
+  
 }
 
 export async function handleJobFailure(

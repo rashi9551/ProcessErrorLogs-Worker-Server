@@ -13,7 +13,6 @@ export async function handleSuccessfulProcessing(
     if (logEntries.length === 0) {
       return { processedLines, entryCount: 0, errorCount, success: true };
     }
-
     // Update job status to processing with error handling
     const { error: statusError } = await supabase
       .from("job_status")
