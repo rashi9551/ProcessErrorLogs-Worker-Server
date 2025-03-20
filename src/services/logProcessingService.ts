@@ -41,7 +41,6 @@ export async function handleSuccessfulProcessing(
     // Analyze and store stats with proper error handling
     try {
       const analysis = analyzeLogEntries(logEntries);
-      console.log(analysis,"=-=-=-");
       
       const { error: statsError } = await supabase
         .from("log_stats")  // Changed table name

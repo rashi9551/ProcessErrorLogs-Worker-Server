@@ -4,6 +4,7 @@ import { connection } from '../config/redis.js';
 import { handleJobFailure, initializeJobStatus } from '../services/jobStatusService.js';
 import { getFileStream, processLogFile } from '../services/fileService.js';
 import { handleSuccessfulProcessing } from '../services/logProcessingService.js';
+import { io } from '../index.js';
 
 export function createLogWorker(): Worker<LogProcessingJobData, JobResult> {
   return new Worker<LogProcessingJobData, JobResult>(
@@ -13,29 +14,32 @@ export function createLogWorker(): Worker<LogProcessingJobData, JobResult> {
       const message = `🔄 Processing job ${job.id}: ${job.name}`;
       console.log(message);
       // await new Promise(resolve => setTimeout(resolve, 60000)); 
-      // io.emit('consoleMessage', { type: 'info', message }); // Broadcast console message
+      io.emit('consoleMessage', { type: 'info', message }); // Broadcast console message
 
       const { userId, originalFilename } = job.data;
       let processedLines = 0;
       let errorCount = 0;
-      const logEntries: LogEntry[] = [];
+      let logEntries: LogEntry[] = [];
 
       try {
         await initializeJobStatus(job, userId, originalFilename, jobStartDate);
         const readStream = await getFileStream(job.data);
 
-        await processLogFile(readStream, job, logEntries, processedLines, errorCount);
+        const result=await processLogFile(readStream, job, logEntries, processedLines, errorCount);
+
+        processedLines=result.processedLines
+        errorCount=result.errorCount
 
         const completionMessage = `✅ Job ${job.id} completed successfully`;
         console.log(completionMessage);
 
-        // io.emit('consoleMessage', { type: 'success', message: completionMessage }); // Broadcast completion message
+        io.emit('consoleMessage', { type: 'success', message: completionMessage }); // Broadcast completion message
 
         return await handleSuccessfulProcessing(job, logEntries, processedLines, errorCount);
       } catch (error: any) {
         const errorMessage = `❌ Job ${job.id} failed: ${error.message}`;
         console.error(errorMessage);
-        // io.emit('consoleMessage', { type: 'error', message: errorMessage }); // Broadcast error message
+        io.emit('consoleMessage', { type: 'error', message: errorMessage }); // Broadcast error message
 
 
         await handleJobFailure(job, processedLines, logEntries.length, errorCount, error);

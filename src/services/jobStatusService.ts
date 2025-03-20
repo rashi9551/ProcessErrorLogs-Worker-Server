@@ -1,7 +1,7 @@
 import { Job } from "bullmq";
 import { JobProgress, LogProcessingJobData } from "../interface/interface.js";
 import { supabase } from "../config/supabase.js";
-import { io } from "../index.js";
+// import { io } from "../index.js";
 
  // Helper functions
  export async function initializeJobStatus(
@@ -106,5 +106,5 @@ export async function markJobCompleted(
     if (dbError) {
         throw new Error(`Failure update failed: ${dbError.message}`);
     }
-    console.log(`✅ Successfully upserted job ${job.id} in database`);
+    console.log(`✅ Successfully upserted failed job ${job.id} in database`);
   }

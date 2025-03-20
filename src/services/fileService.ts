@@ -39,7 +39,7 @@ export async function processLogFile(
   }
   try {
     await updateJobProgress(job, processedLines, logEntries.length, errorCount);
-    
+    return {processedLines,errorCount}
   } catch (error) {
     throw error
   }
