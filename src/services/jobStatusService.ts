@@ -1,7 +1,6 @@
 import { Job } from "bullmq";
 import { JobProgress, LogProcessingJobData } from "../interface/interface.js";
 import { supabase } from "../config/supabase.js";
-// import { io } from "../index.js";
 
  // Helper functions
  export async function initializeJobStatus(

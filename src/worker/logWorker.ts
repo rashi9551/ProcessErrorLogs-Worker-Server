@@ -25,7 +25,7 @@ export function createLogWorker(): Worker<LogProcessingJobData, JobResult> {
         await initializeJobStatus(job, userId, originalFilename, jobStartDate);
         const readStream = await getFileStream(job.data);
 
-        const result=await processLogFile(readStream, job, logEntries, processedLines, errorCount);
+        const result=await processLogFile(readStream, job, logEntries, processedLines, errorCount) as {processedLines:number,errorCount:number}
 
         processedLines=result.processedLines
         errorCount=result.errorCount

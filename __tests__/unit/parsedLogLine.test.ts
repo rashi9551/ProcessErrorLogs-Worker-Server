@@ -1,6 +1,5 @@
 // __tests__/unit/parsedLogLine.test.ts
-import { parseLogLine } from '../../src/utils/parsedLogLine';
-
+import { parseLogLine } from '../../src/utils/parsedLogLine.js';
 describe('parseLogLine', () => {
   test('should correctly parse a valid log line', () => {
     const line = '[2025-02-20T10:00:00Z] ERROR Database timeout {"userId": 123, "ip": "192.168.1.1"}';

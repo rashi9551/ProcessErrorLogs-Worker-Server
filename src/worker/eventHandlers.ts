@@ -1,7 +1,7 @@
 // src/workers/eventHandlers.ts
 import { Worker } from 'bullmq';
 import { LogProcessingJobData, JobResult } from '../interface/interface.js';
-import { markJobCompleted, markJobFailed } from '../services/jobStatusService.js';
+import { markJobCompleted, markJobFailed } from '../services/jobStatusService.js'
 import { io } from '../index.js';
 
 export function registerEventHandlers(worker: Worker<LogProcessingJobData, JobResult>) {

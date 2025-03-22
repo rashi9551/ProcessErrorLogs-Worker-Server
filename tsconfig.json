@@ -1,18 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "NodeNext",          // This must be one of the supported values
-    "moduleResolution": "NodeNext",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "moduleResolution": "node",
     "esModuleInterop": true,
-    "sourceMap": true,
-    "outDir": "dist",
-    "strict": true,
-    "lib": ["ES2022", "DOM"],
-    "resolveJsonModule": true
+    "target": "es6",
+    "module": "ESNext", // Use ESNext for ES Modules
+    "baseUrl": "./",    // Base directory for module resolution
+    "paths": {
+      "*": ["src/*"]    // Map all imports to the `src` directory
+    }
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts", "dist"],
-  "ts-node": {
-    "esm": true
-  }
+  "include": ["src/**/*"]
 }

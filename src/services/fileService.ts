@@ -1,7 +1,7 @@
 import { Readable } from "stream";
 import { LogEntry, LogProcessingJobData } from "../interface/interface.js";
 import { Job } from "bullmq";
-import { parseLogLine } from "../utils/parsedLogLine.js";
+import { parseLogLine } from '../utils/parsedLogLine.js'; // Remove .js
 import { updateJobProgress } from "./jobStatusService.js";
 import readline from "readline";
 import { supabase } from "../config/supabase.js";
@@ -23,28 +23,33 @@ export async function processLogFile(
 
   for await (const line of rl) {
     try {
-      if (!line.trim() || line.startsWith("#")) continue;
-      
+      processedLines++; // Always update processedLines
+
+      if (!line.trim() || line.startsWith("#")) {
+        continue;
+      }
+
       const parsed = parseLogLine(line);
       parsed ? logEntries.push(parsed) : errorCount++;
-      
-      processedLines++;
-      if (processedLines % 10000 === 0) {
+      let count =0
+      console.log("it heppening",count++,parsed)
+      if (processedLines > 0 && processedLines % 10000 === 0) {
         await updateJobProgress(job, processedLines, logEntries.length, errorCount);
       }
-    } catch (error:any) {
+
+    } catch (error: any) {
       errorCount++;
       console.error(`Line ${processedLines} error: ${error.message}`);
     }
   }
+
   try {
     await updateJobProgress(job, processedLines, logEntries.length, errorCount);
-    return {processedLines,errorCount}
+    return { processedLines, errorCount };
   } catch (error) {
-    throw error
+    throw error;
   }
 }
-
 
 export async function getFileStream(data: LogProcessingJobData) {
   const { fileUrl, storagePath, bucketName } = data;
