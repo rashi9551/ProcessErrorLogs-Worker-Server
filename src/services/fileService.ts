@@ -32,7 +32,6 @@ export async function processLogFile(
       const parsed = parseLogLine(line);
       parsed ? logEntries.push(parsed) : errorCount++;
       let count =0
-      console.log("it heppening",count++,parsed)
       if (processedLines > 0 && processedLines % 10000 === 0) {
         await updateJobProgress(job, processedLines, logEntries.length, errorCount);
       }
