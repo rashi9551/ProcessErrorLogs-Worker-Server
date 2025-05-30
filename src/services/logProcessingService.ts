@@ -1,6 +1,6 @@
 import { Job } from "bullmq";
 import { supabase } from "../config/supabase.js";
-import { DatabaseLogEntry, JobResult, LogEntry, LogProcessingJobData } from "../interface/interface.js";
+import { JobResult, LogEntry, LogProcessingJobData } from "../interface/interface.js";
 import analyzeLogEntries from "../utils/analyzeLogEntries.js";
 
 export async function handleSuccessfulProcessing(

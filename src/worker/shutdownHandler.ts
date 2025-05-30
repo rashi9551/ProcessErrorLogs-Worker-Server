@@ -1,4 +1,3 @@
-// src/workers/shutdownHandler.ts
 import { Worker } from 'bullmq';
 import { io } from '../index.js';
 
